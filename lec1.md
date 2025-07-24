@@ -1,4 +1,5 @@
 # Lec 1 : Functions
+
 **Call Expression**
 add(1 + 1, 3)
 the whole thing is called a *call expression*, with parenthesis
@@ -12,7 +13,10 @@ Big call expression can call small call expression and the rules remain the same
 
 **Names, Assignment, and User-Defined Functions**
 *import* can import functions and values
-*assignment statements* can define user-defined names
+
+*assignment statements* can define user-defined names, and '=' is referred as assignment operator
+When executing an assignment statement, Python evaluates the expression to the right of  =  **before** changing the binding to the name on the left.
+
 *def statements* can define users' functions
 
 **Types of Expressions**
@@ -24,20 +28,21 @@ Big call expression can call small call expression and the rules remain the same
 Visualizes the interpreter process
 each frame shows the name and its value
 *Assignment statement* changes the names and values
-execution rules of assignment statement: 
+execution rules of assignment statement:
+
 1. evaluate the right-hand side expression
 2. bind the name on the left-hand side to that value
 
 **Defining Functions**
 A powerful means of abstraction, binding names with expressions
-def <name>(<formal parameters>):
-    <body>
-    return <value>
+def `<name>`(`<formal parameters>`):
+    `<body>`
+    return `<value>`
 *Formal parameters* indicate the arguments needed for this function
-*Execution process for def statements*: 
+*Execution process for def statements*:
 1.create a function with formal parameters
 2.set the body of that function
-3.bind the <name> to the created function in the frame
+3.bind the `<name>` to the created function in the frame
 the body of the function is not executed when the function is defined, but only when the function is called
 *Procedure of calling a user-defined function*:
 1.add a local frame, forming a new environment, and the local frame is named by the name of the function
@@ -50,6 +55,7 @@ Two kinds of functions: built-in and user-defined
 
 **Looking up names in environment**
 so far the environment is either:
+
 * global frame
 * local frame followed by the global frame
 
