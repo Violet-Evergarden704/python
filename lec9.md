@@ -1,2 +1,296 @@
 # Lec 9: Mutability
+## Learnt from Lab
+s[-1] means "the last element of the list".
+
 ## Objects
+*Example:*
+```python
+from datetime import datetime
+today = date(2025, 7, 30)
+next_semester = date(2025, 8, 25)
+str(next_semester - today)
+# '25 days, 0:00:00'  subtracting dates from one another
+# Use a dot expression to get an object attribute
+today.month
+>>> 7
+# a method is sth u use a dot expression to call and act as a function
+today.strftime('%Y-%m-%d')
+# '2025-07-30'
+today.strftime('%A %B %d, %Y')
+# 'Friday July 30, 2025'
+```
+Objects:
+* Represent information
+* Consist of data and behavior, bundled together to create abstractions
+* Objects can also represent properties, interactions and processes
+* A type of object is called a class, and classes are first-class values in Python
+
+Object-oriented programming:
+* A metaphor for organizing large programs
+* Special syntax to improve the composition of programs
+
+In python, every value is an object, and all objects have attributes.
+A lot of object manipulation happens through object methods.
+Functions do one thing, objects do many related things.
+
+*Example: Strings*
+```python
+s = 'Hello'
+"""Some methods often used related to strings"""
+s.upper()
+# 'HELLO'
+s.swapcase()
+# 'hELLO'
+s.isalpha()
+# True
+s.isdigit()
+# False
+```
+
+*ASCII Standard*
+In the ASCII table, the hexadecimal value of a char refers to its position in the table. value of 'A' is 65, which is 0x41, illustrates that 'A' lies in the 4th row and 1st column in the table.
+```python
+a = 'A'
+ord(a)
+# 65
+hex(ord(a))
+# '0x41'
+```
+
+*Unicode Standard*
+Support different languages and symbols.
+
+## Mutation Operations
+An object can change its value over time.
+
+*Example:*
+```python
+suits = ['coin', 'string', 'myraid']
+original = suits
+suits.pop()
+# 'myraid' pop the last element
+suits.remove('string')
+# None
+suits
+# ['coin']
+suits.append('cup')
+suits.extend(['sword', 'club'])
+suits
+# ['coin', 'cup', 'sword', 'club']
+suits[2] = 'spade'
+suits[0: 2] = ['heart', 'diamond']
+suits
+# ['heart', 'diamond', 'spade', 'club']
+original
+# ['heart', 'diamond', 'spade', 'club']
+"""We can see that the original list is changed, though we only operate on the suits object."""
+```
+All names refer to the same object are affected by a mutation.
+Mutation happens whenever an object changes.
+Only mutable objects can be changed, like lists and dictionaries.
+```python
+numerals = {'I': 1, 'V': 5, 'X': 10}
+numerals['X'] = 11
+numerals
+# {'I': 1, 'V': 5, 'X': 11}
+numerals['L'] = 50
+numerals
+# {'I': 1, 'V': 5, 'X': 11, 'L': 50}
+numerals.pop('X')
+#remove the key and its value
+```
+
+Mutation can happen within a func call.
+*Example:*
+```python
+four = [1, 2, 3, 4]
+len(four)
+# 4
+pop_twice(four)
+len(four)
+# 2
+
+def pop_twice(lst):
+    lst.pop()
+    lst.pop()
+```
+
+## Tuples
+Tuples are immutable sequences, meaning that they cannot be changed.
+Use parenthesis to create a tuple.
+Everything separated by commas is evaluated as a tuple.
+tuple(<sequence>) to get a tuple
+*Example:*
+```python
+tuple([3, 4, 5])
+# (3, 4, 5)
+```
+To create a tuple with a single element, add a comma after the element, to avoid being evaluated as values.
+```python
+(3,)
+# (3,)
+```
+'+' operator, 'in' operator and slicing can also be used in tuples.
+Now that tuples are immutable, they can be keys in dictionaries, while lists and dictionaries can't.
+*Example:*
+```python
+d = {[1, 2, 3]: 'hello'}
+# TypeError: unhashable type: 'list'
+```
+But tuples with lists in it can't be keys.
+
+Immutable values are protected from mutation, but not full protection.
+Name change could also lead to different results.
+
+An immutable sequence may change if it contains a mutable value as an element.
+*Example:*
+```python
+t = ([1, 2], [3, 4])
+t[0] = [2]
+# TypeError: 'tuple' object does not support item assignment
+t[0].append(3)
+t
+# ([1, 2, 3], [3, 4])
+```
+
+## Mutation
+*Sameness and Change*
+In the past, we view compound values a total of its pieces, like rational number is just a combination of its numerator and denominator.
+Now we have changes, and this view is no longer valid.
+
+A list might be still the *same*, even though we changed its contents.
+Conversely, we can have 2 lists that are different, but have the same contents.
+*Example:*
+```python
+a = [10]
+b = a
+a == b
+>>>True
+a.append(20)
+a == b
+>>>True
+# Though we changed a, they are still the "same"
+```
+```python
+a = [10]
+b = [10]
+a == b
+>>>True
+b.append(20)
+a == b
+>>>False
+# Though they have the same contents, they are different objects.
+```
+
+*Identity Operator*
+<exp0> is <exp1>
+Evaluates to True if <exp0> and <exp1> evaluate to the same object.
+
+*Equality Operator*
+<exp0> == <exp1>
+Evaluates to True if <exp0> and <exp1> evaluate to the equal value.
+
+Identical objects are often equal values.
+When a and b is not identical, changing one does not affect another.
+
+Mutable default arguments are dangerous.
+A default argument value is part of a function value, not generated by a call.
+```python
+def f(s=[]):
+    s.append(3)
+    return len(s)
+f()
+>>>1 # default is [3]
+f()
+>>>2# default is [3, 3]
+f()
+>>>3# default is [3, 3, 3]
+```
+This is because the default argument is bound to the same value, which is mutable, and u mutate it in the middle of a function, and the change will still be around when u call the function next time.
+
+To avoid this, use None as the default value and create a new list inside the function.
+
+## Mutable Functions
+A function with behavior that varies over time.
+*Example:A bank account with balance of $100*
+If we withdraw $25 twice, the result would be different.
+The balance can be viewed as a *state.*
+
+*Mutable Values and Persist Local State*
+Implementation:
+```python
+def make_withdraw_list(balance):
+    b = [balance]
+    def withdraw(amount):
+        if amount > b[0]: # Not to check with balance, which is the original one, but to check with the current one.
+            return 'Insufficient funds'
+        b[0] = b[0] - amount
+        return b[0]
+    return withdraw
+
+withdraw = make_withdraw_list(100)
+```
+
+## Lists
+Lists in Environment Diagrams
+```python
+s = [2, 3]
+t = [5, 6]
+s.append(t)
+t = 0
+# s is [2, 3, [5, 6]], the s[2] points to the value [5, 6], not name t
+# t is 0
+```
+```python
+s = [2, 3]
+t = [5, 6]
+s.extend(t)
+t[1] = 0
+# s is [2, 3, 5, 6]
+# t is [5, 0]
+```
+```python
+s = [2, 3]
+t = [5, 6]
+a = s + [t]# a is [2, 3, [5, 6]]
+b = a[1:] # b is [3, [5, 6]]
+a[1] = 9 # a is [2, 9, [5, 6]], b is [9, [5, 6]]
+b[1][1] = 0
+# a is [2, 9, [5, 0]]
+# b is [9, [5, 0]]
+# t is [5, 0], because we changed t when we changed b.
+```
+```python
+s = [2, 3]
+t = [5, 6]
+t = list(s) # We create a copy of s, t is not[[2, 3]]
+s[1] = 0
+# s is [2, 0]
+# t is [2, 3]
+```
+What list(<sequence>) does?
+It creates a new list with the same elements as <sequence>.
+In other words, it appends every element to [], and sums up.
+
+```python
+s = [2, 3]
+t = [5, 6]
+s[0:0] = t # This is useful for inserting elements at the beginning of a list: s is now [5, 6, 2, 3]
+s[3:] = t # When using slicing, the elements of t are inserted into s individually, not as a single list element. So s is [5, 6, 2, 5, 6]
+t[1] = 0 # doesn't change s, Python copies the elements of t into s and it does not create a "link" or reference between s and t, so in fact the element in s is number, not t.
+# s is [5, 6, 2, 5, 6]
+# t is [5, 0]
+```
+```python
+s = [2, 3]
+t = [5, 6]
+t = s.pop()
+# t is 3, s is [2]
+```
+```python
+s = [2, 3]
+t = [5, 6]
+t.extend(t) # t is [5, 6, 5, 6]
+t.remove(5) # t is [6, 5, 6]
+"""The remove() method deletes the first occurrence of the specified value"""
+```
