@@ -32,3 +32,5 @@ Adds all elements of an iterable to the end of the list.
 
 `list.pop(index)`
 Removes and returns the element at the specified index. By default, it removes and returns the last element of the list.
+
+Discussion 4 has many examples of recursion, refer to it if necessary.
