@@ -38,6 +38,10 @@ class VendingMachine:
     def __init__(self, product, price):
         """Set the product and its price, as well as other instance attributes."""
         "*** YOUR CODE HERE ***"
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0
 
     def restock(self, n):
         """Add n to the stock and return a message about the updated stock level.
@@ -45,6 +49,8 @@ class VendingMachine:
         E.g., Current candy stock: 3
         """
         "*** YOUR CODE HERE ***"
+        self.stock += n
+        return 'Current ' + self.product + ' stock: ' + str(self.stock)
 
     def add_funds(self, n):
         """If the machine is out of stock, return a message informing the user to restock
@@ -57,6 +63,10 @@ class VendingMachine:
         E.g., Current balance: $4
         """
         "*** YOUR CODE HERE ***"
+        if self.stock == 0:
+            return 'Nothing left to vend. Please restock. Here is your $' + str(n) + '.'
+        self.balance += n
+        return 'Current balance: $' + str(self.balance)
 
     def vend(self):
         """Dispense the product if there is sufficient stock and funds and
@@ -70,6 +80,17 @@ class VendingMachine:
               Please add $3 more funds.
         """
         "*** YOUR CODE HERE ***"
+        if self.stock == 0:
+            return 'Nothing left to vend. Please restock.'
+        if self.balance < self.price:
+            return 'Please add $' + str(self.price - self.balance) + ' more funds.'
+        self.stock -= 1
+        self.balance -= self.price
+        if self.balance == 0:
+            return 'Here is your ' + self.product + '.'
+        s =  'Here is your ' + self.product + ' and $' + str(self.balance) + ' change.'
+        self.balance = 0
+        return s
 
 
 class Account:
@@ -114,6 +135,12 @@ class Account:
         """Return the number of years until balance would grow to amount."""
         assert self.balance > 0 and amount > 0 and self.interest > 0
         "*** YOUR CODE HERE ***"
+        years = 0
+        bal = self.balance
+        while bal < amount:
+            bal += bal * self.interest
+            years += 1
+        return years
 
 
 class FreeChecking(Account):
@@ -144,6 +171,11 @@ class FreeChecking(Account):
     free_withdrawals = 2
 
     "*** YOUR CODE HERE ***"
+    def withdraw(self, amount):
+        if self.free_withdrawals > 0:
+            self.free_withdrawals -= 1
+            return Account.withdraw(self, amount)
+        return Account.withdraw(self, amount + self.withdraw_fee)
 
 
 def add_d_leaves(t, v):
@@ -185,31 +217,14 @@ def add_d_leaves(t, v):
       2
         5
         6
-    >>> add_d_leaves(t3, 10)
-    >>> print(t3)
-    3
-      1
-        3
-          4
-            10
-            10
-            10
-          10
-          10
-        10
-      0
-        10
-      2
-        5
-          10
-          10
-        6
-          10
-          10
-        10
+    
     """
     "*** YOUR CODE HERE ***"
-
+    def add_leaves(t, d):
+            for b in t.branches:
+                add_leaves(b, d + 1)
+            t.branches.extend([Tree(v) for _ in range(d)])
+    add_leaves(t, 0)
 
 def prune_min(t):
     """Prune the tree mutatively.
@@ -227,14 +242,14 @@ def prune_min(t):
     >>> t3
     Tree(6, [Tree(3, [Tree(1)])])
     """
-    if _____________:
+    if t.branches == []:
         return
-    _____________
-    _____________
-    if _____________:
-        _____________
+    prune_min(t.branches[0])
+    prune_min(t.branches[1])
+    if t.branches[0].label > t.branches[1].label:
+        t.branches.pop(0)
     else:
-        _____________
+        t.branches.pop(1)
 
 
 def delete(t, x):
@@ -257,13 +272,13 @@ def delete(t, x):
     Tree(1, [Tree(4), Tree(5), Tree(3, [Tree(6)]), Tree(6), Tree(7), Tree(8), Tree(4)])
     """
     new_branches = []
-    for _________ in ________________:
-        _______________________
+    for b in t.branches:
+        delete(b, x)
         if b.label == x:
-            __________________________________
+            new_branches.extend(b.branches) # extend(): Adds all elements of an iterable to the list
         else:
-            __________________________________
-    t.branches = ___________________
+            new_branches.append(b) # append(): Adds a single element to the end of the list
+    t.branches = new_branches
 
 
 class Tree:
