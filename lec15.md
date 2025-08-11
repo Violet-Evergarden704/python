@@ -80,3 +80,78 @@ Therefore, node 3 is not used, and node 5 and node 2 point to each other.
 ![local picture](./LinkedListMutation.png)
 
 ## Linked List Mutation Example
+Implement function add to the ordered list s, return modified s.
+```python
+def add(s, v):
+    """Add v to an ordered list s with no duplicates.
+    If v is already in s, return s.
+    >>> s = Link(1, Link(2, Link(3)))
+    >>> add(s, 4)
+    Link(1, Link(2, Link(3, Link(4))))
+    """
+    # Think of different situations and solve them, especially the very first(zeroth) and the last element
+    assert s is not Link.empty
+    if s.first > v:
+        s.first, s.rest = v, s
+    elif s.first < v and s.rest is Link.empty:
+        s.rest = Link(v)
+    elif s.first < v:
+        add(s.rest, v) # recursion
+    return s
+```
+
+## Example: Linked Lists
+Several exercises.
+How to judge whether a link is ordered from small to large?
+How to judge whether a link is ordered from small to large by a certain function (eg. abs)?
+How to create a sorted link containing all elements from 2 sorted links?
+```python
+def ordered(s, key=lambda x: x):
+    """Return True if Link s is ordered from small to large, and a key function is involved
+    >>> ordered(Link(1, Link(2, Link(3))))
+    True
+    >>> ordered(Link(1, Link(3, Link(2))))
+    False
+    >>> ordered(Link(1, Link(3, Link(2))), key=abs)
+    True
+    """
+    if s is Link.empty or s.rest is Link.empty:
+        return True
+    elif key(s.first) > key(s.rest.first):
+        return False
+    return ordered(s.rest, key) # Use recursion
+
+def merge(s, t):
+    """Return a sorted link containing all elements from s and t.
+    >>> merge(Link(1, Link(2, Link(3))), Link(1, Link(2, Link(3))))
+    Link(1, Link(1, Link(2, Link(2, Link(3, Link(3))))))
+    """
+    if s is Link.empty:
+        return t
+    elif t is Link.empty:
+        return s
+    elif s.first < t.first:
+        return Link(s.first, merge(s.rest, t))
+    else:
+        return Link(t.first, merge(s, t.rest))
+        # Use recursion, compare one by one
+
+
+def merge_in_place(s, t):
+    """Return a sorted link containing all elements from s and t, without calling Link.
+    >>> s = Link(1, Link(2, Link(3)))
+    >>> t = Link(1, Link(2, Link(3)))
+    >>> merge_in_place(s, t)
+    Link(1, Link(1, Link(2, Link(2, Link(3, Link(3))))))
+    """
+    if s is Link.empty:
+        return t
+    elif t is Link.empty:
+        return s
+    elif s.first < t.first:
+        s.rest = merge_in_place(s.rest, t) # Change s directly instead of using Link to create new links.
+        return s
+    else:
+        t.rest = merge_in_place(s, t.rest)
+        return t
+```
