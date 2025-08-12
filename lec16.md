@@ -55,3 +55,37 @@ def exp2(b, n):
         return b * exp2(b, n - 1)
 ```
 This code executes much faster, especially when we double the n, we have a lot less multiplications.
+A **linear** recursive function like `exp1` require another big unit of time when we double n.
+The **logarithmic** function like `exp2` requires only one more multiplication when we double n, and 10 more times when executing 1024*n.
+Linear and Logarithmic describes the shape of curves when execute different values of n.
+
+## Orders of Growth
+The general category a function falls in regarding its time to execute, such as linear and logarithmic, is called the order of growth.
+Two functions of a same category scale in the same way, with their curve roughly the same.
+**Quadratic Time**
+Functions that process all pairs of values in a sequence of length n require quadratic time.
+```python
+def overlap(a, b):
+    count = 0
+    for item in a:
+        for other in b:
+            if item == other:
+                count += 1
+    return count
+```
+The func compares all pairs, and its execute time depends on length n.
+If we double n, we need 4 times of time to execute.
+The curve is in the shape of a parabola.
+
+**Exponential Time**
+Tree-recursive functions can take exponential time, like the fib function which has yet been memorized.
+
+**Constant Time**
+When we look up a dict with a key, the time has no relation with the size of the dict.
+It is a constant time operation.
+
+All of the orders of growth reveals how time scales with input size.
+They all describe a certain trend, and have certain shapes of curve.
+We can use math expressions to see how time scales with input size, and whether the impact is great compared to other orders.
+
+## Orders of Growth Notation
