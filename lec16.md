@@ -89,3 +89,20 @@ They all describe a certain trend, and have certain shapes of curve.
 We can use math expressions to see how time scales with input size, and whether the impact is great compared to other orders.
 
 ## Orders of Growth Notation
+**Big Theta and Big O Notation for Orders of Growth**
+Big Theta notation: 
+Exponential growth: $\Theta(b^{n})$
+Quadratic growth: $\Theta(n^{2})$
+Linear growth: $\Theta(n)$
+Logarithmic growth: $\Theta(log n)$
+Constant growth: $\Theta(1)$
+Big O notation looks the same as Big Theta notation, like $O(b^{n})$
+But the two notations are different. Big O notation illustrates the most time an order of growth might take, while Big Theta describes both the least and the most time.
+
+## Space
+**The Consumption of Space**
+Which environment frames do we need to keep during evaluation?
+Values and frames in active environment consume memory.
+Memory can be recycled.
+
+`Active environments`: For any function calls currently being evaluated, or the parent environments of functions named in active environments.
