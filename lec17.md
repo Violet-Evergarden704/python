@@ -54,3 +54,76 @@ equivalent to
 (define (plus1 x) (+ x 1))
 
 ## More Special Forms
+**Cond and Begin**
+The `cond` special form behaves like if-elif-else statements in python.
+```scheme
+> (cond ((> x 10) (print 'big))
+        ((< x 5) (print 'small))
+        (else (print 'medium)))
+```
+A cond expression can have a value.
+```scheme
+> (print(cond ((> x 10) 'big)
+        ((< x 5) 'small)
+        (else 'medium)))
+```
+This has the same effect as the former one.
+
+If we use if expression we can do the same thing, but nested ifs are not as readable as cond.
+So when we have multiple elifs it's better to use cond.
+
+The `begin` special form is used to combine expressions together.
+The value of a begin special form is the value of the last expression in the begin.
+```scheme
+> (cond ((> x 10) (begin (print 'big) (print 'guy))
+        (else (begin (print 'small)) (print 'fry))))
+```
+This is equivalent to the python code followed:
+```python
+if x > 10:
+    print('big')
+    print('guy')
+else:
+    print('small')
+    print('fry')
+```
+
+**Let Expressions**
+The `let` special form is used to bind symbols to values temporarily, just for 1 expression.
+```scheme
+(define c (let ((a 1) (b 2))
+    (+ a b)))
+; we define c to be the value of the let expression, which is the last expression (+ a b)
+```
+This is similar to the following python code:
+```python
+a = 1
+b = 2
+c = a + b
+```
+Yet there's a bit of a difference.
+In let, the a and b are not bound permanently, but just used to compute c, and then those bindings are gone.
+Like when we need to call a and b again later, in python we can do it, but in `let` we can't.
+
+In scheme `define` is often used to create permanent things, like procedures or constant(eg. pi).
+
+
+## Example: Sierpinski's Triangle
+We can use built-in draw functions in scheme to draw pictures.
+Common commands:
+* (fd <distance>)
+* (bk <distance>)
+* (rt <angle>)
+* (lt <angle>)
+
+```scheme
+(define (line) (fd 50))
+(define (repeat k fn) (fn) (if (> k 1) (repeat (- k 1) fn)))
+(define (triangle fn)
+    (repeat 3 (lambda () (fn) (rt 120))))
+(define (sierpinski d k)
+    (triangle (lambda () (if (= d 1) (fd k)(leg d k)))))
+(define (leg d k)
+  (sierpinski (- d 1) (/ k 2))
+  (penup) (fd k) (pendown))
+```
