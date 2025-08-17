@@ -30,7 +30,15 @@ def has_path(t, target):
     """
     assert len(target) > 0, 'no path for empty target.'
     "*** YOUR CODE HERE ***"
-    
+    if t.label != target[0]:
+        return False
+    elif len(target) == 1:
+        return True
+    else:
+        for b in t.branches:
+            if has_path(b, target[1:]):
+                return True
+    return False
 
 
 def long_paths(tree, n):
@@ -63,6 +71,13 @@ def long_paths(tree, n):
     [Link(0, Link(11, Link(12, Link(13, Link(14)))))]
     """
     "*** YOUR CODE HERE ***"
+    paths = []
+    if n <= 0 and tree.is_leaf():
+        paths.append(Link(tree.label))
+    for b in tree.branches:
+        for path in long_paths(b, n - 1):
+            paths.append(Link(tree.label, path))
+    return paths
 
 
 def without(s, i):
@@ -79,6 +94,12 @@ def without(s, i):
     True
     """
     "*** YOUR CODE HERE ***"
+    if s is Link.empty:
+        return s
+    if i == 0:
+        return without(s.rest, i-1)
+    else:
+        return Link(s.first, without(s.rest, i-1))
 
 
 def slice_link(link, start, end):
@@ -90,6 +111,12 @@ def slice_link(link, start, end):
     <1 4 1>
     """
     "*** YOUR CODE HERE ***"
+    if end == 0:
+        return Link.empty
+    elif start == 0:
+        return Link(link.first, slice_link(link.rest, 0, end-1))
+    else:
+        return slice_link(link.rest, start-1, end-1)
 
 
 def level_mutation_link(t, funcs):
@@ -109,16 +136,16 @@ def level_mutation_link(t, funcs):
 	>>> t3    # Level 0: 1+1=2; Level 1: 2*5=10; no further levels, so apply remaining z ** 2: 10**2=100
 	Tree(2, [Tree(100)])
 	"""
-	if _____________________:
+	if funcs is Link.empty:
 		return
-	t.label = _____________________
-	remaining = _____________________
-	if __________________:
-		while _____________________:
-			_____________________
+	t.label = funcs.first(t.label)
+	remaining = funcs.rest
+	if t.isleaf():
+		while remaining is not Link.empty:
+			t.label = remaining.first(t.label)
 			remaining = remaining.rest
 	for b in t.branches:
-		_____________________
+		level_mutation_link(b, remaining)
 
 
 class Tree:
