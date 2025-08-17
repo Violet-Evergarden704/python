@@ -1,0 +1,30 @@
+{
+    "name": "Homework 5",
+    "endpoint": "cal/cs61a/su25/hw05",
+    "src": [
+        "hw05.py",
+        "hw05.scm"
+    ],
+    "tests": {
+        "hw*.py": "doctest",
+        "tests/*.py": "ok_test"
+    },
+    "default_tests": [
+        "store_digits",
+        "deep_map_mut",
+        "lgk_pow",
+        "pow",
+        "repeatedly-cube",
+        "cadr-caddr"
+    ],
+    "protocols": [
+        "restore",
+        "file_contents",
+        "analytics",
+        "help",
+        "followup",
+        "unlock",
+        "grading",
+        "backup"
+    ]
+}
