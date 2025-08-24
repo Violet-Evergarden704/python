@@ -107,6 +107,7 @@ Like when we need to call a and b again later, in python we can do it, but in `l
 
 In scheme `define` is often used to create permanent things, like procedures or constant(eg. pi).
 
+In fact, we can add multiple expressions in a let, and only the **last** expression will be the value of the let.
 
 ## Example: Sierpinski's Triangle
 We can use built-in draw functions in scheme to draw pictures.
@@ -127,3 +128,7 @@ Common commands:
   (sierpinski (- d 1) (/ k 2))
   (penup) (fd k) (pendown))
 ```
+
+Or and And expressions:
+`Or`: return the first true value, or the last value if all are false.
+`And`: return the first false value, or the last value if all are true.
