@@ -53,6 +53,13 @@ def deep_map_mut(func, s):
     <9 <16> 25 36>
     """
     "*** YOUR CODE HERE ***"
+    if isinstance(s.first, Link):
+        deep_map_mut(func, s.first.first)
+    elif s.first is Link.empty:
+        return
+    else:
+        s.first = func(s.first)
+        deep_map_mut(func, s.rest)
 
 
 def lgk_pow(n,k):
@@ -65,6 +72,7 @@ def lgk_pow(n,k):
     >>> a = lgk_pow(2, 100000000) # make sure you have log time
     """
     "*** YOUR CODE HERE ***"
+    
 
 
 class Link:
