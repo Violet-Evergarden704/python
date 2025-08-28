@@ -72,3 +72,37 @@ Rewrite it:
 Now `(length-iter s 0)` is in a tail context, so it is a tail call.
 
 ## Tail Recursion Examples
+If one procedure runs in constant space O(1), then every recursive call in its body must be a tail call.
+Examples excluded.
+
+## Map and Reduce
+### Example: Reduce
+```scheme
+(define (reduce procedure s start)
+  (if (null? s)
+      start
+      (reduce procedure (cdr s)
+              (procedure (car s) start))))
+```
+if `procedure` requires constant space, then the `reduce` procedure runs in constant space.
+
+### Example: Map
+Natural version:
+```scheme
+(define (map procedure s)
+  (if (null? s)
+      '()
+      (cons (procedure (car s))
+            (map procedure (cdr s)))))
+```
+
+Tail recursive version:
+```scheme
+(define (map-tail procedure s)
+  (define (map-iter s acc)
+    (if (null? s)
+        acc
+        (map-iter (cdr s)
+                  (cons (procedure (car s)) acc))))
+  (map-iter s '()))
+```
