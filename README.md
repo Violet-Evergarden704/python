@@ -1,4 +1,4 @@
-# python
+# CS61A-Study
 This is for python self-studying during vocation, focusing on CS61A.
 
 ## Contents
