@@ -1,5 +1,5 @@
 # python
-This is for python self-studying during vocation, focusing on CS 61A.
+This is for python self-studying during vocation, focusing on CS61A.
 
 ## Contents
 * My notes
