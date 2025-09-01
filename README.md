@@ -1,5 +1,5 @@
 # CS61A-Study
-This is for python self-studying during vocation, focusing on CS61A.
+This is for python self-studying during vocation, focusing on CS61A, 2025 Summer version.
 
 ## Contents
 * My notes
