@@ -1,2 +1,3 @@
 # Lec22: Macros
-## Expressions
+## Macros
+A feature of scheme that allows you to define new special forms.
