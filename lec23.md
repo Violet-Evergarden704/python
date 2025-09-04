@@ -62,3 +62,19 @@ A `SELECT` statement can specify an input table using a `FORM` clause.
 Use quotes when mentioning a specific value, and no quotes when mentioning a column name.
 
 ## Arithmetic Expressions
+In a select expression, column names evaluate to row values.
+Arithmetic expressions can combine row values and constants.
+```sql
+create table lift as 
+    select 101 as chair, 2 as single, 2 as couple union
+    select 102 as chair, 0 as single, 3 as couple union
+    select 103 as chair, 4 as single, 1 as couple;
+
+select chair, single + 2 * couple as total from lift;
+```
+result:
+|chair|total|
+|:--------:|:---------:|
+|101|6|
+|102|6|
+|103|6|
