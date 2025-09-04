@@ -46,5 +46,19 @@ SELECT [expression] AS [new_name], [expression] AS [new_name], ...
 A `CREATE TABLE` statement creates a new table.
 CREATE TABLE [table_name] as [select_statement]
 
-## Projecting Tables
+In SQL, `UNION` is a set operator used to combine the results of two or more SELECT statements into a single result set.
+```sql
+SELECT name FROM customers
+UNION
+SELECT name FROM suppliers;
+```
+`UNION`: Removes duplicate rows (performs a DISTINCT operation on the combined result).
+`UNION ALL`: Includes all rows, including duplicates (faster than UNION because it skips the deduplication step).
 
+## Projecting Tables
+A `SELECT` statement can specify an input table using a `FORM` clause.
+![1756966963735](image/lec23/1756966963735.png)
+![1756967207176](image/lec23/1756967207176.png)
+Use quotes when mentioning a specific value, and no quotes when mentioning a column name.
+
+## Arithmetic Expressions
